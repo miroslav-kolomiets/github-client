@@ -1,12 +1,17 @@
 import React from 'react';
+import Loader from './components/Loader/Loader';
+import Dashboard from './components/Dashboard/Dashboard';
+import SearchForm from './components/SearchForm/SearchForm';
+import Footer from './components/Footer/Footer';
 
-class UserRepos extends React.Component {
+class App extends React.Component {
   constructor(){
     super();
     this.state = {
       name: '',
       repos: [],
-      data: []
+      data: [],
+      isLoading: true
     };
   }
 
@@ -60,7 +65,8 @@ class UserRepos extends React.Component {
       })
       .then(data => {
         this.setState({
-          repos: data
+          repos: data,
+          isLoading: false
         });
         this.getData();
       })
@@ -75,28 +81,22 @@ class UserRepos extends React.Component {
 
   render() {
     const data = this.state.data;
+    const isLoading = this.state.isLoading;
 
     return (
-      <div>
-        <form onSubmit={this.handleSubmit} className='search-form'>
-          <label>
-            <input placeholder="User Name" type="text" value={this.state.name} onChange={this.handleChange} className='search-input' />
-          </label>
-          <input type="submit" value="Get repositories" className='search-submit-btn' />
-        </form>
-        <ul className='results'>
-          {data.map((data) => {
-            return (
-              <li key={data.id} className='results-items'>
-                <a href={data.url} className='results-link'>{data.url}</a>
-                <p className='results-description'>{data.description}</p>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-    );
+        <React.Fragment>
+            <div className="content">
+                <SearchForm 
+                    name={this.state.name}
+                    handleChange={this.handleChange}
+                    handleSubmit={this.handleSubmit}
+                />
+                {isLoading ? <Loader /> : <Dashboard data={data}/>}
+            </div>
+            <Footer />
+        </React.Fragment>
+    )
   }
 }
 
-export default UserRepos;
+export default App;

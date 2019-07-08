@@ -1,0 +1,40 @@
+.results {
+    background-color: #2c2c2c;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+.results-items {
+    list-style-type: none;
+    width: 420px;
+    min-height: 75px;
+    background-color: #414141;
+    padding: 20px;
+    margin: 10px;
+}
+
+.results-link {
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #ffffff;
+}
+
+.results-description {
+    font-family: Arial;
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #dddddd;
+    padding: 20px;
+}
