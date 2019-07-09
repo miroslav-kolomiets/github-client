@@ -2,6 +2,7 @@ import React from 'react';
 import Loader from './components/Loader/Loader';
 import Dashboard from './components/Dashboard/Dashboard';
 import SearchForm from './components/SearchForm/SearchForm';
+import UserCard from './components/UserCard/UserCard';
 import Footer from './components/Footer/Footer';
 
 class App extends React.Component {
@@ -11,7 +12,8 @@ class App extends React.Component {
       name: '',
       repos: [],
       data: [],
-      isLoading: true
+      isLoading: true,
+      userData: []
     };
   }
 
@@ -37,6 +39,7 @@ class App extends React.Component {
     event.preventDefault();
     const name = this.state.name;
     this.getRepos(name);
+    this.getUserData(name);
   }
 
   getData = () => {
@@ -52,6 +55,31 @@ class App extends React.Component {
     });
 
     this.setState({data: data})
+  }
+
+  getUserData = name => {
+    const url = `https://api.github.com/users/${name}`;
+    if (name) {
+      fetch(url)
+      .then(response => {
+        if(response.ok) return response.json();
+        alert('Request failed.');
+        throw new Error('Request failed.');
+      })
+      .then(data => {
+        this.setState({
+          userData: data,
+          isLoading: false
+        });
+        this.getData();
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error);
+      });
+    } else {
+      alert('Please enter name.')
+    }
   }
 
   getRepos = name => {
@@ -81,16 +109,18 @@ class App extends React.Component {
 
   render() {
     const data = this.state.data;
+    const userData = this.state.userData;
     const isLoading = this.state.isLoading;
 
     return (
         <React.Fragment>
+            <SearchForm 
+                name={this.state.name}
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+            />
             <div className="content">
-                <SearchForm 
-                    name={this.state.name}
-                    handleChange={this.handleChange}
-                    handleSubmit={this.handleSubmit}
-                />
+                {isLoading ? null: <UserCard userData={userData}/>}
                 {isLoading ? <Loader /> : <Dashboard data={data}/>}
             </div>
             <Footer />
