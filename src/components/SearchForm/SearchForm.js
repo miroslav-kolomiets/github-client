@@ -7,7 +7,7 @@ class SearchForm extends React.Component {
     const {handleChange, handleSubmit, name} = this.props;
     
     return (
-      <div>
+      <header>
         <form 
             onSubmit={handleSubmit} 
             className='search-form'
@@ -23,7 +23,7 @@ class SearchForm extends React.Component {
           </label>
           <input type="submit" value="Get repositories" className='search-submit-btn' />
         </form>
-      </div>
+      </header>
     )
   }
 }

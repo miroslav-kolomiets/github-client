@@ -119,10 +119,10 @@ class App extends React.Component {
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
             />
-            <div className="content">
+            <main className="content">
                 {isLoading ? null: <UserCard userData={userData}/>}
                 {isLoading ? <Loader /> : <Dashboard data={data}/>}
-            </div>
+            </main>
             <Footer />
         </React.Fragment>
     )
