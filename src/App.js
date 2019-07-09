@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import SearchForm from './components/SearchForm/SearchForm';
 import UserCard from './components/UserCard/UserCard';
 import Footer from './components/Footer/Footer';
+import Modal from './components/Modal/Modal';
 
 class App extends React.Component {
   constructor(){
@@ -13,7 +14,8 @@ class App extends React.Component {
       repos: [],
       data: [],
       isLoading: true,
-      userData: []
+      userData: [],
+      error: false
     };
   }
 
@@ -63,7 +65,7 @@ class App extends React.Component {
       fetch(url)
       .then(response => {
         if(response.ok) return response.json();
-        alert('Request failed.');
+        this.setState({error: true});
         throw new Error('Request failed.');
       })
       .then(data => {
@@ -75,10 +77,10 @@ class App extends React.Component {
       })
       .catch(error => {
         console.log(error);
-        alert(error);
+        this.setState({error: true});
       });
     } else {
-      alert('Please enter name.')
+      this.setState({error: true});
     }
   }
 
@@ -88,7 +90,7 @@ class App extends React.Component {
       fetch(url)
       .then(response => {
         if(response.ok) return response.json();
-        alert('Request failed.');
+        this.setState({error: true});
         throw new Error('Request failed.');
       })
       .then(data => {
@@ -100,31 +102,33 @@ class App extends React.Component {
       })
       .catch(error => {
         console.log(error);
-        alert(error);
+        this.setState({error: true});
       });
     } else {
-      alert('Please enter name.')
+      this.setState({error: true});
     }
   }
 
   render() {
     const data = this.state.data;
+    const error = this.state.error;
     const userData = this.state.userData;
     const isLoading = this.state.isLoading;
 
     return (
-        <React.Fragment>
-            <SearchForm 
-                name={this.state.name}
-                handleChange={this.handleChange}
-                handleSubmit={this.handleSubmit}
-            />
-            <main className="content">
-                {isLoading ? null: <UserCard userData={userData}/>}
-                {isLoading ? <Loader /> : <Dashboard data={data}/>}
-            </main>
-            <Footer />
-        </React.Fragment>
+      <React.Fragment>
+          <SearchForm 
+              name={this.state.name}
+              handleChange={this.handleChange}
+              handleSubmit={this.handleSubmit}
+          />
+          <main className="content">
+              {isLoading ? null: <UserCard userData={userData}/>}
+              {isLoading ? <Loader /> : <Dashboard data={data}/>}
+          </main>
+          <Footer />
+          {error ? <Modal /> : null}
+      </React.Fragment>
     )
   }
 }
