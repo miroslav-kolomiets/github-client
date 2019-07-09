@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
     <g fill="none" fill-rule="evenodd">
         <circle cx="24" cy="24" r="24" fill="#DDEEFC"/>
-        <g fill="#359BF0" fill-rule="nonzero" transform="translate(22 12)">
+        <g fill="red" fill-rule="nonzero" transform="translate(22 12)">
             <path d="M3 15a1 1 0 0 1-2 0V1a1 1 0 1 1 2 0v14z"/>
             <circle cx="2" cy="21.068" r="2"/>
         </g>
