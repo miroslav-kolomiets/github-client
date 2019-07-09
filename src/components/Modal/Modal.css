@@ -15,6 +15,15 @@
     align-items: center;
 }
 
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
 .info {
     margin-bottom: 20px;
 }

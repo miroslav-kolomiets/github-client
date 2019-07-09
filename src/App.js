@@ -5,6 +5,8 @@ import SearchForm from './components/SearchForm/SearchForm';
 import UserCard from './components/UserCard/UserCard';
 import Footer from './components/Footer/Footer';
 import Modal from './components/Modal/Modal';
+import getUserData from './utils/getUserData';
+import getRepos from './utils/getRepos';
 
 class App extends React.Component {
   constructor(){
@@ -20,6 +22,7 @@ class App extends React.Component {
   }
 
   getUrlParam = () => {
+    this.getRepos = getRepos.bind(this);
     const url_string = window.location.href;
     const url = new URL(url_string);
     const username = url.searchParams.get("username");
@@ -35,11 +38,19 @@ class App extends React.Component {
 
   handleChange = event => {
     this.setState({name: event.target.value});
+    this.setState({error: false});
+  }
+
+  closeModal = event => {
+    event.preventDefault();
+    this.setState({error: false});
   }
 
   handleSubmit = event => {
     event.preventDefault();
     const name = this.state.name;
+    this.getRepos = getRepos.bind(this);
+    this.getUserData = getUserData.bind(this);
     this.getRepos(name);
     this.getUserData(name);
   }
@@ -57,56 +68,6 @@ class App extends React.Component {
     });
 
     this.setState({data: data})
-  }
-
-  getUserData = name => {
-    const url = `https://api.github.com/users/${name}`;
-    if (name) {
-      fetch(url)
-      .then(response => {
-        if(response.ok) return response.json();
-        this.setState({error: true});
-        throw new Error('Request failed.');
-      })
-      .then(data => {
-        this.setState({
-          userData: data,
-          isLoading: false
-        });
-        this.getData();
-      })
-      .catch(error => {
-        console.log(error);
-        this.setState({error: true});
-      });
-    } else {
-      this.setState({error: true});
-    }
-  }
-
-  getRepos = name => {
-    const url = `https://api.github.com/users/${name}/repos`;
-    if (name) {
-      fetch(url)
-      .then(response => {
-        if(response.ok) return response.json();
-        this.setState({error: true});
-        throw new Error('Request failed.');
-      })
-      .then(data => {
-        this.setState({
-          repos: data,
-          isLoading: false
-        });
-        this.getData();
-      })
-      .catch(error => {
-        console.log(error);
-        this.setState({error: true});
-      });
-    } else {
-      this.setState({error: true});
-    }
   }
 
   render() {
@@ -127,7 +88,7 @@ class App extends React.Component {
               {isLoading ? <Loader /> : <Dashboard data={data}/>}
           </main>
           <Footer />
-          {error ? <Modal /> : null}
+          {error ? <Modal closeModal={this.closeModal}/> : null}
       </React.Fragment>
     )
   }
